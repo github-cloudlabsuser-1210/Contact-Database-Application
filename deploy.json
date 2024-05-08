@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webAppName": {
+            "type": "string",
+            "metadata": {
+                "description": "CRUDApplication"
+            }
+        },
+        "appServicePlanName": {
+            "type": "string",
+            "metadata": {
+                "description": "CRUD_APP_SERVICE_PLAN"
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "East US"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-06-01",
+            "name": "[parameters('CRUD_APP_SERVICE_PLAN')]",
+            "location": "[parameters('East US')]",
+            "sku": {
+                "name": "F1",
+                "capacity": 1
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-06-01",
+            "name": "[parameters('CRUDApplication')]",
+            "location": "[parameters('East US')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('CRUD_APP_SERVICE_PLAN'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('CRUD_APP_SERVICE_PLAN'))]"
+            }
+        }
+    ]
+}
